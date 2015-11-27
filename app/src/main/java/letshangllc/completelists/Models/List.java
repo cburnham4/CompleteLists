@@ -4,15 +4,15 @@ package letshangllc.completelists.Models;
  * Created by cvburnha on 11/26/2015.
  */
 public class List {
-    int id;
+    int lid;
     String name;
 
-    public int getId() {
-        return id;
+    public int getLid() {
+        return lid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setLid(int lid) {
+        this.lid = lid;
     }
 
     public String getName() {
@@ -23,9 +23,9 @@ public class List {
         this.name = name;
     }
 
-    public List(int id, String name) {
+    public List(int lid, String name) {
 
-        this.id = id;
+        this.lid = lid;
         this.name = name;
     }
 

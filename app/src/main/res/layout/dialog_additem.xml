@@ -19,7 +19,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="5dp"
-        android:hint="Ex. Bread"
+
         android:id="@+id/et_item_name"/>
 
 
