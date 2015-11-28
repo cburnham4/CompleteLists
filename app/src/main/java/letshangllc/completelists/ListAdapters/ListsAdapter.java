@@ -18,8 +18,6 @@ import letshangllc.completelists.R;
 public class ListsAdapter extends RecyclerView.Adapter<ListsAdapter.ViewHolder> {
     public ArrayList<List> lists;
 
-
-
     // Provide a suitable constructor (depends on the kind of dataset)
     public ListsAdapter(ArrayList<List> lists, Context context) {
         this.lists = lists;
@@ -30,7 +28,7 @@ public class ListsAdapter extends RecyclerView.Adapter<ListsAdapter.ViewHolder> 
     public ListsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                      int viewType) {
         // create a new view
-        View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_grocervy, null);
+        View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list, null);
 
         // create ViewHolder
 
@@ -44,10 +42,10 @@ public class ListsAdapter extends RecyclerView.Adapter<ListsAdapter.ViewHolder> 
 
         // - get data from your itemsData at this position
         // - replace the contents of the view with that itemsData
-        final List task = lists.get(position);
+        final List list = lists.get(position);
 
 
-        viewHolder.tv_task.setText(task.getTask());
+        viewHolder.tv_list.setText(list.getName());
 
 
     }
@@ -55,17 +53,17 @@ public class ListsAdapter extends RecyclerView.Adapter<ListsAdapter.ViewHolder> 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return  tasks.size();
+        return  lists.size();
     }
 
     // inner class to hold a reference to each item of RecyclerView
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tv_task;
+        public TextView tv_list;
         // public CheckBox bx_complete_task;
 
         public ViewHolder(View view) {
             super(view);
-            tv_task = (TextView) view.findViewById(R.id.tv_task);
+            tv_list = (TextView) view.findViewById(R.id.tv_list);
             //bx_complete_task = (CheckBox) view.findViewById(R.id.bx_complete_task);
 
 

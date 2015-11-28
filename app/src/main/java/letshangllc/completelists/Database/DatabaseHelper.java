@@ -12,23 +12,24 @@ import java.util.List;
  * Created by cvburnha on 11/26/2015.
  */
 public class DatabaseHelper extends SQLiteOpenHelper{
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // Database Name
     private static final String DATABASE_NAME = "CompleteListDB";
 
 
     private static final String TABLE_CREATE_LISTS =
-            "CREATE TABLE Lists("
-                    + "lid integer primary key AUTOINCREMENT,"
-                    + "list TEXT"
+            "CREATE TABLE " + ListTableContract.TABLE_NAME + " ("
+                    + ListTableContract.COLUMN_NAME_LIST_ID + " integer primary key AUTOINCREMENT,"
+                    + ListTableContract.COLUMN_NAME_LIST + " TEXT"
                     + ")";
 
     private static final String TABLE_CREATE_LIST_ITEMS =
-            "Create table Items("
+            "Create TABLE Items("
                     + "iid integer primary key AUTOINCREMENT,"
-                    + "lid integer,"
-                    + "item TEXT,"
+                    + "lid integer, "
+                    + "item TEXT, "
+                    + "note TEXT, "
                     + "FOREIGN KEY(lid) REFERENCES Lists(lid)"
                     + ")";;
 
