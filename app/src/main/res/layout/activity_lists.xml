@@ -8,15 +8,16 @@
 
     <include layout="@layout/toolbar"></include>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/my_recycler_view"
-
+    <ListView
+        android:id="@+id/lv_lists"
         android:layout_width="match_parent"
-        android:layout_margin="5dp"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
-        android:layout_above="@+id/ad_layout"
-        />
+        android:background="@color/white"
+        android:layout_above="@+id/ad_layout">
+
+    </ListView>
+
 
     <include layout="@layout/ad_layout"></include>
 </RelativeLayout>

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 
@@ -34,15 +35,14 @@ public class Activity_Lists extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar); // Attaching the layout to the toolbar object
         setSupportActionBar(toolbar);
 
-        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        ListView listView = (ListView) findViewById(R.id.lv_lists);
 
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(mLayoutManager);
+
 
         databaseHelper = new DatabaseHelper(this);
         this.readLists();
-        listsAdapter = new ListsAdapter(lists, this);
-        recyclerView.setAdapter(listsAdapter);
+        listsAdapter = new ListsAdapter(this, lists);
+        listView.setAdapter(listsAdapter);
 
     }
 

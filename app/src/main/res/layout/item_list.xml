@@ -16,12 +16,12 @@
         android:id="@+id/tv_list"
         android:textStyle="normal" />
 
-    <!-- line seperating the layout items -->
+    <!-- line seperating the layout items
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="2dp"
         android:background="@color/primaryAccent"
-        android:layout_below="@id/tv_list"/>
+        android:layout_below="@id/tv_list"/> -->
 
 </RelativeLayout>
