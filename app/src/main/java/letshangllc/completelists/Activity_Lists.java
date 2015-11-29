@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.util.ArrayList;
 
@@ -88,6 +89,7 @@ public class Activity_Lists extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 
     private void insertIntoDB(String newList){
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
