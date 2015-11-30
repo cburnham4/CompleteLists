@@ -68,10 +68,8 @@ public class ListsCRUD {
     public void deleteFromDatabase(List list){
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
-        int lid = list.getLid();
-        /* Delete from db where did */
+        /* Delete from db where lid */
         db.delete(ListTableContract.TABLE_NAME, "" + ListTableContract.COLUMN_NAME_LIST_ID + " = " + list.getLid(), null);
-        //db.delete("Lifts", "did = " + did, null);
 
         lists.remove(list);
         listsAdapter.notifyDataSetChanged();

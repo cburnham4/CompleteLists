@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +25,7 @@ import letshangllc.completelists.Database.DatabaseHelper;
 import letshangllc.completelists.Database.ListTableContract;
 import letshangllc.completelists.Database.ListsCRUD;
 import letshangllc.completelists.Dialogs.Dialog_AddItem;
+import letshangllc.completelists.Dialogs.Dialog_EditItem;
 import letshangllc.completelists.ListAdapters.ListsAdapter;
 import letshangllc.completelists.Models.List;
 
@@ -55,6 +57,8 @@ public class Activity_Lists extends AppCompatActivity {
 
         listView.setOnItemClickListener(new ListViewOnClick());
 
+        registerForContextMenu(listView);
+
     }
 
     /**
@@ -62,19 +66,20 @@ public class Activity_Lists extends AppCompatActivity {
      */
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        getMenuInflater().inflate(R.menu.menu_days_lifts, menu);
+        getMenuInflater().inflate(R.menu.menu_lv_lists, menu);
     }
 
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        List list = listsAdapter.getItem(info.position);
         switch(item.getItemId()){
             case R.id.edit:
-                displayDialog(daysAdapter.getItem(info.position));
-                Toast.makeText(this, "Edit : " + daysAdapter.getItem(info.position).getDay(), Toast.LENGTH_SHORT).show();
+                displayDialog(list);
+                Toast.makeText(this, "Edit : " + list.getName(), Toast.LENGTH_SHORT).show();
                 break;
             case R.id.delete:
-                Toast.makeText(this, "Deleted: " + daysAdapter.getItem(info.position).getDay(), Toast.LENGTH_SHORT).show();
-                deleteFromDatabase(daysAdapter.getItem(info.position));
+                Toast.makeText(this, "Deleted: " + list.getName(), Toast.LENGTH_SHORT).show();
+                listsCRUD.deleteFromDatabase(list);
                 break;
         }
         return true;
@@ -114,8 +119,6 @@ public class Activity_Lists extends AppCompatActivity {
     }
 
     public class ListViewOnClick implements AdapterView.OnItemClickListener{
-
-
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(Activity_Lists.this, Activity_ListItems.class);
@@ -126,6 +129,21 @@ public class Activity_Lists extends AppCompatActivity {
             intent.putExtra(ListTableContract.COLUMN_NAME_LIST, name);
             startActivity(intent);
         }
+    }
+
+    private void displayDialog(List list){
+        Dialog_EditItem dialog_editItem = new Dialog_EditItem();
+        final List list1 = list;
+        /* Set the name for the dialog to use */
+        dialog_editItem.setName(list1.getName());
+        /* Set the callback for when the user presses Finish */
+        dialog_editItem.setCallback(new Dialog_EditItem.EditItemListener() {
+            @Override
+            public void onDialogPositiveClick(DialogFragment dialog, String newName) {
+                listsCRUD.updateDB(list1, newName);
+            }
+        });
+        dialog_editItem.show(this.getSupportFragmentManager(), "Edit_Day");
     }
 
 
