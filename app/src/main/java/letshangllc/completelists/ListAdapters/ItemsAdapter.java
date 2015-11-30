@@ -16,7 +16,11 @@ import letshangllc.completelists.R;
 /**
  * Created by cvburnha on 11/30/2015.
  */
- /* todo try creating one adapter with generics */
+ /* todo change to work with swipe to delete*/
+
+    /*
+    todo add checkbox listener
+     */
 public class ItemsAdapter extends ArrayAdapter<Item> {
     public ArrayList<Item> items;
     private Context context;
@@ -39,7 +43,7 @@ public class ItemsAdapter extends ArrayAdapter<Item> {
         if (convertView == null) {
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.item_list, parent, false);
+            convertView = inflater.inflate(R.layout.item_listitem, parent, false);
             viewHolder.tv_list = (TextView) convertView.findViewById(R.id.tv_list);
             convertView.setTag(viewHolder);
         } else {

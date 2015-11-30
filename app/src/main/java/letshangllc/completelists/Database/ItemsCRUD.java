@@ -28,7 +28,6 @@ public class ItemsCRUD {
 
     public void readLists(){
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        //lists= new ArrayList<>();
         String[] projetion = {ListItemsTableContract.COLUMN_ITEMS_ID,
                 ListItemsTableContract.COLUMN_LIST_ID,
                 ListItemsTableContract.COLUMN_ITEM_NAME,
