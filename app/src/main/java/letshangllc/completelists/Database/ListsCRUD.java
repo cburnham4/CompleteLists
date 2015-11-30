@@ -76,7 +76,7 @@ public class ListsCRUD {
         db.close();
     }
 
-    public int getLastLid(){
+    private int getLastLid(){
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
         String sql = "SELECT Max(lid) FROM Lists";
         Cursor c = db.rawQuery(sql, null);

@@ -43,6 +43,9 @@ public class Dialog_AddItem extends DialogFragment {
         View view = inflater.inflate(R.layout.dialog_additem, null);
 
         final EditText et_item_name = (EditText) view.findViewById(R.id.et_item_name);
+
+        /*Todo figure out the hint */
+
         et_item_name.setHint(hint);
 
         builder.setView(view)

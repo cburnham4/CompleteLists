@@ -97,6 +97,7 @@ public class Activity_Lists extends AppCompatActivity {
         switch (id){
             case R.id.action_add:
                 Dialog_AddItem dialog_addItem = new Dialog_AddItem();
+                dialog_addItem.setHint("Ex. Groceries");
                 dialog_addItem.setCallback(new Dialog_AddItem.AddItemListener() {
                     @Override
                     public void onDialogPositiveClick(String newName) {
