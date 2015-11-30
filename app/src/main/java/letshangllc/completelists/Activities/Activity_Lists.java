@@ -1,4 +1,4 @@
-package letshangllc.completelists;
+package letshangllc.completelists.Activities;
 
 import android.content.Intent;
 import android.support.v4.app.DialogFragment;
@@ -22,6 +22,7 @@ import letshangllc.completelists.Dialogs.Dialog_AddItem;
 import letshangllc.completelists.Dialogs.Dialog_EditItem;
 import letshangllc.completelists.ListAdapters.ListsAdapter;
 import letshangllc.completelists.Models.List;
+import letshangllc.completelists.R;
 
 public class Activity_Lists extends AppCompatActivity {
     private Toolbar toolbar;

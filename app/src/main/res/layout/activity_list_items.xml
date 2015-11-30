@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="letshangllc.completelists.Activity_ListItems">
+    tools:context=".Activities.Activity_ListItems">
 
     <include layout="@layout/toolbar"></include>
 
