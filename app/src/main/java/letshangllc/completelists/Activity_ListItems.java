@@ -20,7 +20,7 @@ public class Activity_ListItems extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Intent recievedIntent = getIntent();
-        lid = recievedIntent.getIntExtra(ListTableContract.COLUMN_NAME_LIST_ID, 0);
+        lid = recievedIntent.getIntExtra(ListTableContract.COLUMN_LIST_ID, 0);
         this.setTitle("title " + lid);
     }
 }

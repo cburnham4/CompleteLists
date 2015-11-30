@@ -5,9 +5,10 @@ package letshangllc.completelists.Database;
  */
 public class ListItemsTableContract {
 
-    public static final String TABLE_NAME = "Lists";
-    public static final String COLUMN_NAME_ITEMS_ID = "id";
-    public static final String COLUMN_NAME_LIST_ID = "listid"; //FK relating to PK of list table
+    public static final String TABLE_NAME = "Items";
+    public static final String COLUMN_ITEMS_ID = "iid";
+    public static final String COLUMN_LIST_ID = "lid"; //FK relating to PK of list table
 
-    public static final String COLUMN_NAME_ITEM_NAME = "listItem";
+    public static final String COLUMN_ITEM_NAME = "item";
+    public static final String COLUMN_ITEM_NOTE = "note";
 }

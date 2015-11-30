@@ -1,11 +1,8 @@
 package letshangllc.completelists.Database;
 
 import android.content.Context;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
-import java.util.List;
 
 
 /**
@@ -20,17 +17,18 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     private static final String TABLE_CREATE_LISTS =
             "CREATE TABLE " + ListTableContract.TABLE_NAME + " ("
-                    + ListTableContract.COLUMN_NAME_LIST_ID + " integer primary key AUTOINCREMENT,"
-                    + ListTableContract.COLUMN_NAME_LIST + " TEXT"
+                    + ListTableContract.COLUMN_LIST_ID + " integer primary key AUTOINCREMENT,"
+                    + ListTableContract.COLUMN_LIST_NAME + " TEXT"
                     + ")";
 
     private static final String TABLE_CREATE_LIST_ITEMS =
-            "Create TABLE Items("
-                    + "iid integer primary key AUTOINCREMENT,"
-                    + "lid integer, "
-                    + "item TEXT, "
-                    + "note TEXT, "
-                    + "FOREIGN KEY(lid) REFERENCES Lists(lid)"
+            "Create TABLE " + ListItemsTableContract.TABLE_NAME +" ( "
+                    + ListItemsTableContract.COLUMN_ITEMS_ID +" integer primary key AUTOINCREMENT, "
+                    + ListItemsTableContract.COLUMN_LIST_ID + " integer, "
+                    + ListItemsTableContract.COLUMN_ITEM_NAME + " TEXT, "
+                    + ListItemsTableContract.COLUMN_ITEM_NOTE + " TEXT, "
+                    + "FOREIGN KEY("+ListItemsTableContract.COLUMN_LIST_ID+") " +
+                        "REFERENCES Lists("+ListTableContract.COLUMN_LIST_ID  +") "
                     + ")";;
 
 

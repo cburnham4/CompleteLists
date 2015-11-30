@@ -8,7 +8,7 @@ import android.provider.BaseColumns;
 public class ListTableContract {
 
     public static final String TABLE_NAME = "Lists";
-    public static final String COLUMN_NAME_LIST_ID = "lid";
-    public static final String COLUMN_NAME_LIST = "list";
+    public static final String COLUMN_LIST_ID = "lid";
+    public static final String COLUMN_LIST_NAME = "list";
 
 }

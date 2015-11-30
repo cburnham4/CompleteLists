@@ -1,16 +1,10 @@
 package letshangllc.completelists;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -125,8 +119,8 @@ public class Activity_Lists extends AppCompatActivity {
             List list = listsAdapter.getItem(position);
             int lid = list.getLid();
             String name = list.getName();
-            intent.putExtra(ListTableContract.COLUMN_NAME_LIST_ID, lid);
-            intent.putExtra(ListTableContract.COLUMN_NAME_LIST, name);
+            intent.putExtra(ListTableContract.COLUMN_LIST_ID, lid);
+            intent.putExtra(ListTableContract.COLUMN_LIST_NAME, name);
             startActivity(intent);
         }
     }

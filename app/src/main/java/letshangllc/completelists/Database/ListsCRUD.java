@@ -29,7 +29,7 @@ public class ListsCRUD {
     public void readLists(){
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
         //lists= new ArrayList<>();
-        String[] projetion = {ListTableContract.COLUMN_NAME_LIST_ID, ListTableContract.COLUMN_NAME_LIST};
+        String[] projetion = {ListTableContract.COLUMN_LIST_ID, ListTableContract.COLUMN_LIST_NAME};
         Cursor c = db.query(ListTableContract.TABLE_NAME, projetion, null,null,null,null,null);
         c.moveToFirst();
         while (c.isAfterLast() == false) {
@@ -43,7 +43,7 @@ public class ListsCRUD {
     public void insertIntoDB(String newList){
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(ListTableContract.COLUMN_NAME_LIST, newList);
+        values.put(ListTableContract.COLUMN_LIST_NAME, newList);
         db.insert(ListTableContract.TABLE_NAME, null, values);
 
         /* Add the new day to the listview */
@@ -56,8 +56,8 @@ public class ListsCRUD {
         /*Update the day in the Database */
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         ContentValues newValues = new ContentValues();
-        newValues.put(ListTableContract.COLUMN_NAME_LIST, newName);
-        db.update(ListTableContract.TABLE_NAME, newValues, "" + ListTableContract.COLUMN_NAME_LIST_ID + " = " + list.getLid(), null);
+        newValues.put(ListTableContract.COLUMN_LIST_NAME, newName);
+        db.update(ListTableContract.TABLE_NAME, newValues, "" + ListTableContract.COLUMN_LIST_ID + " = " + list.getLid(), null);
         /*Update the day on the listview */
         list.setName(newName);
         listsAdapter.notifyDataSetChanged();
@@ -69,7 +69,7 @@ public class ListsCRUD {
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
         /* Delete from db where lid */
-        db.delete(ListTableContract.TABLE_NAME, "" + ListTableContract.COLUMN_NAME_LIST_ID + " = " + list.getLid(), null);
+        db.delete(ListTableContract.TABLE_NAME, "" + ListTableContract.COLUMN_LIST_ID + " = " + list.getLid(), null);
 
         lists.remove(list);
         listsAdapter.notifyDataSetChanged();
