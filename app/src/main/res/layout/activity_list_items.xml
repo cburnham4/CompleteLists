@@ -7,4 +7,16 @@
 
     <include layout="@layout/toolbar"></include>
 
+    <ListView
+        android:id="@+id/lv_items"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:background="@color/white"
+        android:layout_above="@+id/ad_layout">
+
+    </ListView>
+
+    <include layout="@layout/ad_layout"></include>
+
 </RelativeLayout>

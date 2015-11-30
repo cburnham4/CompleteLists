@@ -4,9 +4,28 @@ package letshangllc.completelists.Models;
  * Created by cvburnha on 11/26/2015.
  */
 public class ListItem {
-    String itemName;
-    int id;
-    int lid;
+    private String itemName;
+    private int id;
+    private int lid;
+    private String note;
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public ListItem(String itemName, int id, int lid, String note) {
+
+        this.itemName = itemName;
+        this.id = id;
+        this.lid = lid;
+        this.note = note;
+    }
+
+
 
     public int getLid() {
         return lid;
@@ -16,10 +35,6 @@ public class ListItem {
         this.lid = lid;
     }
 
-    public ListItem(String itemName, int id) {
-        this.itemName = itemName;
-        this.id = id;
-    }
 
     public String getItemName() {
         return itemName;

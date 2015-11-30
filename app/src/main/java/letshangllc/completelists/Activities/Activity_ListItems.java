@@ -19,9 +19,12 @@ public class Activity_ListItems extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar); // Attaching the layout to the toolbar object
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         Intent recievedIntent = getIntent();
         lid = recievedIntent.getIntExtra(ListTableContract.COLUMN_LIST_ID, 0);
-        this.setTitle("title " + lid);
+        String name = recievedIntent.getStringExtra(ListTableContract.COLUMN_LIST_NAME);
+        this.setTitle(name);
     }
 }
