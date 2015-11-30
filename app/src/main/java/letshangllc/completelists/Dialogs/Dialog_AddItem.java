@@ -44,8 +44,6 @@ public class Dialog_AddItem extends DialogFragment {
 
         final EditText et_item_name = (EditText) view.findViewById(R.id.et_item_name);
 
-        /*Todo figure out the hint */
-
         et_item_name.setHint(hint);
 
         builder.setView(view)
@@ -53,9 +51,6 @@ public class Dialog_AddItem extends DialogFragment {
                 .setPositiveButton("ADD", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        /*TODO
-                        complete this with a callback
-                         */
                         String newName = et_item_name.getText().toString();
                         mListener.onDialogPositiveClick(newName);
                     }

@@ -18,8 +18,6 @@ public class ListsCRUD {
     private ArrayList<List> lists;
     private ListsAdapter listsAdapter;
 
-    /* todo reorganize this */
-
     public ListsCRUD(Context context, ArrayList<List> lists, ListsAdapter listsAdapter){
         this.databaseHelper = new DatabaseHelper(context);
         this.lists = lists;
@@ -64,13 +62,13 @@ public class ListsCRUD {
         db.close();
     }
 
-    /* Todo delete the items in the list from other table */
+
     public void deleteFromDatabase(List list){
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
         /* Delete from db where lid */
         db.delete(ListTableContract.TABLE_NAME, "" + ListTableContract.COLUMN_LIST_ID + " = " + list.getLid(), null);
-
+        db.delete(ListItemsTableContract.TABLE_NAME, "" + ListItemsTableContract.COLUMN_LIST_ID + " = " + list.getLid(), null);
         lists.remove(list);
         listsAdapter.notifyDataSetChanged();
         db.close();

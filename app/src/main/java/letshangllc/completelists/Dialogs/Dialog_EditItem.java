@@ -16,8 +16,6 @@ import letshangllc.completelists.R;
  */
 public class Dialog_EditItem extends DialogFragment {
 
-
-    /* TODO  Create four dialogs */
     String name;
 
     public interface EditItemListener {

@@ -28,7 +28,6 @@ public class Activity_Lists extends AppCompatActivity {
     private Toolbar toolbar;
     private ArrayList<List> lists;
     private ListsAdapter listsAdapter;
-    private DatabaseHelper databaseHelper;
     private ListsCRUD listsCRUD;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +41,6 @@ public class Activity_Lists extends AppCompatActivity {
 
         lists = new ArrayList<>();
 
-        databaseHelper = new DatabaseHelper(this);
-
         listsAdapter = new ListsAdapter(this, lists);
 
         listsCRUD = new ListsCRUD(this, lists,listsAdapter);
@@ -53,6 +50,8 @@ public class Activity_Lists extends AppCompatActivity {
         listView.setOnItemClickListener(new ListViewOnClick());
 
         registerForContextMenu(listView);
+
+        this.setTitle("All Lists");
 
     }
 

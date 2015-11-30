@@ -19,8 +19,6 @@ public class ItemsCRUD {
     private ItemsAdapter itemsAdapter;
     private int lid;
 
-    /* todo reorganize this */
-
     public ItemsCRUD(Context context, ArrayList<Item> items, ItemsAdapter itemsAdapter, int lid){
         this.databaseHelper = new DatabaseHelper(context);
         this.items = items;
@@ -52,6 +50,7 @@ public class ItemsCRUD {
         ContentValues values = new ContentValues();
 
         values.put(ListItemsTableContract.COLUMN_ITEM_NAME, name);
+        values.put(ListItemsTableContract.COLUMN_LIST_ID, lid);
         db.insert(ListItemsTableContract.TABLE_NAME, null, values);
 
         /* Add the new day to the listview */
