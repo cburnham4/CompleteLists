@@ -33,7 +33,8 @@ public class ItemsCRUD {
                 ListItemsTableContract.COLUMN_LIST_ID,
                 ListItemsTableContract.COLUMN_ITEM_NAME,
                 ListItemsTableContract.COLUMN_ITEM_NOTE};
-        Cursor c = db.query(ListItemsTableContract.TABLE_NAME, projetion, null,null,null,null,null);
+        String selection = ListItemsTableContract.COLUMN_LIST_ID + " = " + lid;
+        Cursor c = db.query(ListItemsTableContract.TABLE_NAME, projetion, selection,null,null,null,null);
         c.moveToFirst();
 
         while (c.isAfterLast() == false) {
