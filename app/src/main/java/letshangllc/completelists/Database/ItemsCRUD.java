@@ -7,8 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 
-import letshangllc.completelists.ListAdapters.ListsAdapter;
-import letshangllc.completelists.Models.List;
+import letshangllc.completelists.ListAdapters.ItemsAdapter;
 import letshangllc.completelists.Models.Item;
 
 /**
@@ -16,70 +15,78 @@ import letshangllc.completelists.Models.Item;
  */
 public class ItemsCRUD {
     DatabaseHelper databaseHelper;
-    private ArrayList<Item> lists;
-    private ListsAdapter listsAdapter;
+    private ArrayList<Item> items;
+    private ItemsAdapter itemsAdapter;
+    private int lid;
 
     /* todo reorganize this */
 
-    public ItemsCRUD(Context context, ArrayList<Item> items, ItemsAdapter itemsAdapter){
+    public ItemsCRUD(Context context, ArrayList<Item> items, ItemsAdapter itemsAdapter, int lid){
         this.databaseHelper = new DatabaseHelper(context);
-        this.lists = lists;
-        this.listsAdapter = listsAdapter;
+        this.items = items;
+        this.itemsAdapter = itemsAdapter;
+        this.lid = lid;
     }
 
     public void readLists(){
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
         //lists= new ArrayList<>();
-        String[] projetion = {ListTableContract.COLUMN_LIST_ID, ListTableContract.COLUMN_LIST_NAME};
-        Cursor c = db.query(ListTableContract.TABLE_NAME, projetion, null,null,null,null,null);
+        String[] projetion = {ListItemsTableContract.COLUMN_ITEMS_ID,
+                ListItemsTableContract.COLUMN_LIST_ID,
+                ListItemsTableContract.COLUMN_ITEM_NAME,
+                ListItemsTableContract.COLUMN_ITEM_NOTE};
+        Cursor c = db.query(ListItemsTableContract.TABLE_NAME, projetion, null,null,null,null,null);
         c.moveToFirst();
+
         while (c.isAfterLast() == false) {
-            lists.add(new List(c.getInt(0),c.getString(1)));
+            items.add(new Item(c.getInt(0), c.getInt(1),c.getString(2), c.getString(3)));
             c.moveToNext();
         }
         c.close();
-        listsAdapter.notifyDataSetChanged();
-    }
-
-    public void insertIntoDB(String newList){
-        SQLiteDatabase db = databaseHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(ListTableContract.COLUMN_LIST_NAME, newList);
-        db.insert(ListTableContract.TABLE_NAME, null, values);
-
-        /* Add the new day to the listview */
-        lists.add(new List(getLastLid(), newList));
-        listsAdapter.notifyDataSetChanged();
+        itemsAdapter.notifyDataSetChanged();
         db.close();
     }
 
-    public void updateDB(List list, String newName){
+    public void insertItemIntoDB(String name){
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(ListItemsTableContract.COLUMN_ITEM_NAME, name);
+        db.insert(ListItemsTableContract.TABLE_NAME, null, values);
+
+        /* Add the new day to the listview */
+        items.add(new Item(getLastIid(), lid, name, ""));
+        itemsAdapter.notifyDataSetChanged();
+        db.close();
+    }
+
+    public void updateName(Item item, String newName){
         /*Update the day in the Database */
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         ContentValues newValues = new ContentValues();
-        newValues.put(ListTableContract.COLUMN_LIST_NAME, newName);
-        db.update(ListTableContract.TABLE_NAME, newValues, "" + ListTableContract.COLUMN_LIST_ID + " = " + list.getLid(), null);
+        newValues.put(ListItemsTableContract.COLUMN_ITEM_NAME, newName);
+        db.update(ListItemsTableContract.TABLE_NAME, newValues, "" + ListItemsTableContract.COLUMN_ITEMS_ID + " = " + item.getId(), null);
         /*Update the day on the listview */
-        list.setName(newName);
-        listsAdapter.notifyDataSetChanged();
+        item.setItemName(newName);
+        itemsAdapter.notifyDataSetChanged();
         db.close();
     }
 
-    /* Todo delete the items in the list from other table */
-    public void deleteFromDatabase(List list){
+
+    public void deleteFromDatabase(Item item){
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
         /* Delete from db where lid */
-        db.delete(ListTableContract.TABLE_NAME, "" + ListTableContract.COLUMN_LIST_ID + " = " + list.getLid(), null);
+        db.delete(ListItemsTableContract.TABLE_NAME, "" + ListItemsTableContract.COLUMN_ITEMS_ID + " = " + item.getId(), null);
 
-        lists.remove(list);
-        listsAdapter.notifyDataSetChanged();
+        items.remove(item);
+        itemsAdapter.notifyDataSetChanged();
         db.close();
     }
 
-    private int getLastLid(){
+    private int getLastIid(){
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        String sql = "SELECT Max(lid) FROM Lists";
+        String sql = "SELECT Max(iid) FROM " + ListItemsTableContract.TABLE_NAME;
         Cursor c = db.rawQuery(sql, null);
         c.moveToFirst();
         return c.getInt(0);

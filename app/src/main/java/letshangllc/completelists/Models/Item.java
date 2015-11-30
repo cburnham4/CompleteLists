@@ -17,7 +17,7 @@ public class Item {
         this.note = note;
     }
 
-    public Item(String itemName, int id, int lid, String note) {
+    public Item(int id, int lid, String itemName, String note) {
 
         this.itemName = itemName;
         this.id = id;

@@ -16,7 +16,7 @@ import letshangllc.completelists.R;
 /**
  * Created by cvburnha on 11/30/2015.
  */
-
+ /* todo try creating one adapter with generics */
 public class ItemsAdapter extends ArrayAdapter<Item> {
     public ArrayList<Item> items;
     private Context context;
