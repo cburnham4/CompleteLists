@@ -3,7 +3,7 @@ package letshangllc.completelists.Models;
 /**
  * Created by cvburnha on 11/26/2015.
  */
-public class ListItem {
+public class Item {
     private String itemName;
     private int id;
     private int lid;
@@ -17,7 +17,7 @@ public class ListItem {
         this.note = note;
     }
 
-    public ListItem(String itemName, int id, int lid, String note) {
+    public Item(String itemName, int id, int lid, String note) {
 
         this.itemName = itemName;
         this.id = id;
