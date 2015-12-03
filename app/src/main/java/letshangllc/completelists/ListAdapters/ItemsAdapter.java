@@ -5,7 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -27,6 +29,7 @@ public class ItemsAdapter extends ArrayAdapter<Item> {
 
     public static class ViewHolder {
         TextView tv_list;
+        CheckBox bx_complete;
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
@@ -37,7 +40,7 @@ public class ItemsAdapter extends ArrayAdapter<Item> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        Item item = getItem(position);
+        final Item item = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
         if (convertView == null) {
@@ -45,6 +48,15 @@ public class ItemsAdapter extends ArrayAdapter<Item> {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.item_listitem, parent, false);
             viewHolder.tv_list = (TextView) convertView.findViewById(R.id.tv_list);
+            viewHolder.bx_complete = (CheckBox) convertView.findViewById(R.id.bx_complete);
+
+            viewHolder.bx_complete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, item.getItemName(), Toast.LENGTH_LONG).show();
+
+                }
+            });
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();

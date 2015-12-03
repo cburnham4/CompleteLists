@@ -21,7 +21,6 @@ import letshangllc.completelists.Dialogs.Dialog_AddItem;
 import letshangllc.completelists.Dialogs.Dialog_EditItem;
 import letshangllc.completelists.ListAdapters.ItemsAdapter;
 import letshangllc.completelists.Models.Item;
-import letshangllc.completelists.Models.List;
 import letshangllc.completelists.R;
 
 public class Activity_ListItems extends AppCompatActivity {
@@ -101,7 +100,7 @@ public class Activity_ListItems extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+        getMenuInflater().inflate(R.menu.menu_toolbar_lists, menu);
         return true;
     }
 

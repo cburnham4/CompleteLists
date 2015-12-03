@@ -10,8 +10,8 @@
         android:id="@+id/bx_complete"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
-        android:scaleX="1.30"
-        android:scaleY="1.30" />
+        android:scaleX="1.15"
+        android:scaleY="1.15" />
 
     <TextView
         android:layout_width="wrap_content"

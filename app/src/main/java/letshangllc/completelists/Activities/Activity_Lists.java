@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import letshangllc.completelists.Database.DatabaseHelper;
 import letshangllc.completelists.Database.ListTableContract;
 import letshangllc.completelists.Database.ListsCRUD;
 import letshangllc.completelists.Dialogs.Dialog_AddItem;
@@ -84,7 +83,7 @@ public class Activity_Lists extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+        getMenuInflater().inflate(R.menu.menu_toolbar_lists, menu);
         return true;
     }
 
