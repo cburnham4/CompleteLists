@@ -1,18 +1,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context="letshangllc.completelists.Activities.Activity_ListItems">
-    <item
-        android:id="@+id/action_add"
-        android:orderInCategory="150"
-        android:title="Add"
-        android:icon="@drawable/ic_action_plus"
-        app:showAsAction="ifRoom"></item>
 
     <item
         android:id="@+id/action_complete"
-        android:orderInCategory="250"
+        android:orderInCategory="100"
         android:title="Complete"
         android:icon="@drawable/ic_action_check"
         app:showAsAction="ifRoom"
         ></item>
+
+    <item
+        android:id="@+id/action_add"
+        android:orderInCategory="100"
+        android:title="Add"
+        android:icon="@drawable/ic_action_plus"
+        app:showAsAction="ifRoom"></item>
+
 </menu>

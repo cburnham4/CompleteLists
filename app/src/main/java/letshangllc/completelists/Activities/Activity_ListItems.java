@@ -102,7 +102,7 @@ public class Activity_ListItems extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_toolbar_lists, menu);
+        getMenuInflater().inflate(R.menu.menu_toolbar_items, menu);
         return true;
     }
 
@@ -127,8 +127,9 @@ public class Activity_ListItems extends AppCompatActivity {
                 dialog_addItem.show(getSupportFragmentManager(), "dialog");
                 break;
             case R.id.action_complete:
-                for(Item listITem : completedItems){
-                    items.remove(listITem);
+                for(Item listItem : completedItems){
+                    items.remove(listItem);
+                    itemsCRUD.deleteFromDatabase(listItem);
                 }
                 completedItems.clear();
                 itemsAdapter.notifyDataSetChanged();
