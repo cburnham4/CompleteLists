@@ -1,6 +1,7 @@
 package letshangllc.completelists.ListAdapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ public class ItemsAdapter extends ArrayAdapter<Item> {
     public ArrayList<Item> items;
     private Context context;
     private ArrayList<Item> completedItems;
+    private int colorID;
 
     public static class ViewHolder {
         TextView tv_list;
@@ -39,6 +41,8 @@ public class ItemsAdapter extends ArrayAdapter<Item> {
         super(context, R.layout.item_list, items);
         this.completedItems = completedItems;
         this.context = context;
+        colorID = context.getResources().getColor(R.color.primaryAccent);
+
     }
 
     @Override
@@ -63,29 +67,36 @@ public class ItemsAdapter extends ArrayAdapter<Item> {
 
                 }
             });
-            viewHolder.bx_complete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                  @Override
-                  public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                      if(isChecked){
-                          completedItems.add(item);
-                          viewHolder.tv_list.setPaintFlags(viewHolder.tv_list.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                      }else{
-                          if(completedItems.contains(item)){
-                              completedItems.remove(item);
-                              //viewHolder.tv_list.setPaintFlags(viewHolder.tv_list.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
-                              viewHolder.tv_list.setPaintFlags(0);
-                          }
-                      }
-                  }
-              }
-            );
-
             convertView.setTag(viewHolder);
+            viewHolder.bx_complete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CheckBox cb = (CheckBox) v;
+
+                    Item item = (Item) cb.getTag(R.string.TAG_ITEM);
+                    TextView tv = (TextView) cb.getTag(R.string.TAG_TEXTVIEW);
+                    item.setIsSelected(cb.isChecked());
+                    if(item.isSelected()){
+                        completedItems.add(item);
+                        tv.setPaintFlags(tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    }else{
+                        completedItems.remove(item);
+                        tv.setPaintFlags(0);
+                    }
+                }
+            });
+
+
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         // Populate the data into the template view using the data object
         viewHolder.tv_list.setText(item.getItemName());
+        viewHolder.tv_list.setPaintFlags(0);
+        viewHolder.bx_complete.setChecked(item.isSelected());
+        viewHolder.bx_complete.setTag(R.string.TAG_ITEM, item);
+        viewHolder.bx_complete.setTag(R.string.TAG_TEXTVIEW, viewHolder.tv_list);
+
         // Return the completed view to render on screen
         return convertView;
     }
