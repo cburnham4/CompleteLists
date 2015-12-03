@@ -8,6 +8,7 @@ public class Item {
     private int id;
     private int lid;
     private String note;
+    private boolean isSelected;
 
     public String getNote() {
         return note;
@@ -17,12 +18,22 @@ public class Item {
         this.note = note;
     }
 
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setIsSelected(boolean isSelected) {
+        this.isSelected = isSelected;
+    }
+
     public Item(int id, int lid, String itemName, String note) {
 
         this.itemName = itemName;
         this.id = id;
         this.lid = lid;
         this.note = note;
+        isSelected = false;
+
     }
 
 

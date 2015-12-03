@@ -129,10 +129,13 @@ public class Activity_ListItems extends AppCompatActivity {
             case R.id.action_complete:
                 for(Item listItem : completedItems){
                     items.remove(listItem);
+                    itemsAdapter.remove(listItem);
                     itemsCRUD.deleteFromDatabase(listItem);
                 }
                 completedItems.clear();
                 itemsAdapter.notifyDataSetChanged();
+
+
                 break;
         }
 
