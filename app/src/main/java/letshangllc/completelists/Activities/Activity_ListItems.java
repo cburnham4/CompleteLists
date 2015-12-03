@@ -28,6 +28,7 @@ public class Activity_ListItems extends AppCompatActivity {
     private int lid;
     private ItemsCRUD itemsCRUD;
     private ArrayList<Item> items;
+    private ArrayList<Item> completedItems;
     private ItemsAdapter itemsAdapter;
 
     @Override
@@ -43,7 +44,8 @@ public class Activity_ListItems extends AppCompatActivity {
         this.setTitle(name);
 
         items = new ArrayList<>();
-        itemsAdapter = new ItemsAdapter(this, items);
+        completedItems = new ArrayList<>();
+        itemsAdapter = new ItemsAdapter(this, items, completedItems);
 
         itemsCRUD = new ItemsCRUD(this, items, itemsAdapter, lid);
 
@@ -123,6 +125,13 @@ public class Activity_ListItems extends AppCompatActivity {
                     }
                 });
                 dialog_addItem.show(getSupportFragmentManager(), "dialog");
+                break;
+            case R.id.action_complete:
+                for(Item listITem : completedItems){
+                    items.remove(listITem);
+                }
+                completedItems.clear();
+                itemsAdapter.notifyDataSetChanged();
                 break;
         }
 

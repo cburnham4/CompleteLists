@@ -26,6 +26,7 @@ import letshangllc.completelists.R;
 public class ItemsAdapter extends ArrayAdapter<Item> {
     public ArrayList<Item> items;
     private Context context;
+    private ArrayList<Item> completedItems;
 
     public static class ViewHolder {
         TextView tv_list;
@@ -33,8 +34,9 @@ public class ItemsAdapter extends ArrayAdapter<Item> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ItemsAdapter(Context context, ArrayList<Item> items) {
+    public ItemsAdapter(Context context, ArrayList<Item> items, ArrayList<Item> completedItems) {
         super(context, R.layout.item_list, items);
+        this.completedItems = completedItems;
     }
 
     @Override
@@ -42,7 +44,7 @@ public class ItemsAdapter extends ArrayAdapter<Item> {
         // Get the data item for this position
         final Item item = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
-        ViewHolder viewHolder; // view lookup cache stored in tag
+        final ViewHolder viewHolder; // view lookup cache stored in tag
         if (convertView == null) {
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -53,10 +55,19 @@ public class ItemsAdapter extends ArrayAdapter<Item> {
             viewHolder.bx_complete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    /*todo cross out text view */
                     Toast.makeText(context, item.getItemName(), Toast.LENGTH_LONG).show();
+                    if(viewHolder.bx_complete.isChecked()){
+                        completedItems.add(item);
+                    }else{
+                        if(completedItems.contains(items)){
+                            completedItems.remove(items);
+                        }
+                    }
 
                 }
             });
+
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
