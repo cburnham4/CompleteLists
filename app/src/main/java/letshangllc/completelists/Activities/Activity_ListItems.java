@@ -60,6 +60,8 @@ public class Activity_ListItems extends AppCompatActivity {
 
         registerForContextMenu(listView);
 
+
+
         adsHelper = new AdsHelper(getWindow().getDecorView(), getResources().getString(R.string.admob_items_id), this);
 
         adsHelper.setUpAds();
