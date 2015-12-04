@@ -14,7 +14,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import letshangllc.completelists.AdsHelper;
 import letshangllc.completelists.Database.ItemsCRUD;
 import letshangllc.completelists.Database.ListTableContract;
 import letshangllc.completelists.Dialogs.Dialog_AddItem;
@@ -31,6 +34,7 @@ public class Activity_ListItems extends AppCompatActivity {
     private ArrayList<Item> completedItems;
     private ItemsAdapter itemsAdapter;
 
+    private AdsHelper adsHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +59,18 @@ public class Activity_ListItems extends AppCompatActivity {
         itemsCRUD.readLists();
 
         registerForContextMenu(listView);
+
+        adsHelper = new AdsHelper(getWindow().getDecorView(), getResources().getString(R.string.admob_items_id), this);
+
+        adsHelper.setUpAds();
+        int delay = 1000; // delay for 1 sec.
+        int period = getResources().getInteger(R.integer.ad_refresh_rate);
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                adsHelper.refreshAd();  // display the data
+            }
+        }, delay, period);
     }
 
     /* todo swipe to delete */
