@@ -58,15 +58,6 @@ public class ItemsAdapter extends ArrayAdapter<Item> {
             viewHolder.tv_list = (TextView) convertView.findViewById(R.id.tv_list);
             viewHolder.bx_complete = (CheckBox) convertView.findViewById(R.id.bx_complete);
 
-            viewHolder.bx_complete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    /*todo cross out text view
-                    * and fix when unclick*/
-
-
-                }
-            });
             convertView.setTag(viewHolder);
             viewHolder.bx_complete.setOnClickListener(new View.OnClickListener() {
                 @Override
