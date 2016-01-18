@@ -38,7 +38,7 @@ public class ListsAdapter extends ArrayAdapter<List> {
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.item_list, parent, false);
-            viewHolder.tv_list = (TextView) convertView.findViewById(R.id.tv_list);
+            viewHolder.tv_list = (TextView) convertView.findViewById(R.id.tv_list_item);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();

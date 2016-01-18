@@ -22,7 +22,7 @@
         android:paddingLeft="10dp"
         android:textSize="24sp"
         android:layout_toRightOf="@+id/bx_complete"
-        android:id="@+id/tv_list"
+        android:id="@+id/tv_list_item"
         android:textStyle="normal" />
 
 

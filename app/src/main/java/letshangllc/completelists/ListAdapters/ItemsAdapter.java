@@ -1,16 +1,13 @@
 package letshangllc.completelists.ListAdapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -29,10 +26,10 @@ public class ItemsAdapter extends ArrayAdapter<Item> {
     public ArrayList<Item> items;
     private Context context;
     private ArrayList<Item> completedItems;
-    private int colorID;
+
 
     public static class ViewHolder {
-        TextView tv_list;
+        TextView tv_list_item;
         CheckBox bx_complete;
     }
 
@@ -41,8 +38,6 @@ public class ItemsAdapter extends ArrayAdapter<Item> {
         super(context, R.layout.item_list, items);
         this.completedItems = completedItems;
         this.context = context;
-        colorID = context.getResources().getColor(R.color.primaryAccent);
-
     }
 
     @Override
@@ -55,7 +50,7 @@ public class ItemsAdapter extends ArrayAdapter<Item> {
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.item_listitem, parent, false);
-            viewHolder.tv_list = (TextView) convertView.findViewById(R.id.tv_list);
+            viewHolder.tv_list_item = (TextView) convertView.findViewById(R.id.tv_list_item);
             viewHolder.bx_complete = (CheckBox) convertView.findViewById(R.id.bx_complete);
 
             convertView.setTag(viewHolder);
@@ -82,11 +77,11 @@ public class ItemsAdapter extends ArrayAdapter<Item> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         // Populate the data into the template view using the data object
-        viewHolder.tv_list.setText(item.getItemName());
-        viewHolder.tv_list.setPaintFlags(0);
+        viewHolder.tv_list_item.setText(item.getItemName());
+        viewHolder.tv_list_item.setPaintFlags(0);
         viewHolder.bx_complete.setChecked(item.isSelected());
         viewHolder.bx_complete.setTag(R.string.TAG_ITEM, item);
-        viewHolder.bx_complete.setTag(R.string.TAG_TEXTVIEW, viewHolder.tv_list);
+        viewHolder.bx_complete.setTag(R.string.TAG_TEXTVIEW, viewHolder.tv_list_item);
 
         // Return the completed view to render on screen
         return convertView;

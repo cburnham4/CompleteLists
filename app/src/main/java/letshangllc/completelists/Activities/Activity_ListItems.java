@@ -75,7 +75,7 @@ public class Activity_ListItems extends AppCompatActivity {
         }, delay, period);
     }
 
-    /* todo swipe to delete */
+
     private void setUpToolbar(){
         toolbar = (Toolbar) findViewById(R.id.toolbar); // Attaching the layout to the toolbar object
         setSupportActionBar(toolbar);
