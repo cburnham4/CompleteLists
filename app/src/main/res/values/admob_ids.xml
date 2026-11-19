@@ -3,27 +3,18 @@
     PRODUCTION AdMob IDs for Complete List (letshangllc.completelists)
 
     Publisher: ca-app-pub-8223005482588566
-
-    Banner unit IDs were recovered from the previously published app-release.apk
-    (values/ was gitignored in source control).
+    Source: AdMob console export (admob-ids.csv)
 
     Debug builds override these with Google's official test IDs via
     app/src/debug/res/values/admob_ids.xml
 -->
 <resources>
-    <!--
-      TODO(release): Replace 0000000000 with the real AdMob App ID suffix from AdMob
-      console (format ca-app-pub-8223005482588566~XXXXXXXXXX). The ~ App ID was not
-      present in the old APK (pre-APPLICATION_ID requirement). Create/link an AdMob
-      app for package letshangllc.completelists and paste the full App ID here.
-      Do NOT reuse Lift Tracker's App ID. Debug builds override this with Google's
-      test App ID via app/src/debug/res/values/admob_ids.xml.
-    -->
-    <string name="admob_app_id">ca-app-pub-8223005482588566~0000000000</string>
+    <!-- AdMob Application ID — "Complete List" / letshangllc.completelists -->
+    <string name="admob_app_id">ca-app-pub-8223005482588566~3054663130</string>
 
-    <!-- Lists screen banner (Activity_Lists) — from published APK -->
+    <!-- Activity_Lists — AdMob unit "Banner of List Activity" -->
     <string name="admob_lists_id">ca-app-pub-8223005482588566/4531396335</string>
 
-    <!-- List items screen banner (Activity_ListItems) — from published APK -->
+    <!-- Activity_ListItems — AdMob unit "Banner of Items" -->
     <string name="admob_items_id">ca-app-pub-8223005482588566/6008129537</string>
 </resources>

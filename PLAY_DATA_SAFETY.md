@@ -130,6 +130,6 @@ Do **not** declare email, name, location, or financial info for this app version
 
 1. Complete the **Data safety** form using this document (this was the removal reason).
 2. Declare ads in **App content** / advertising declarations.
-3. Confirm AdMob app is linked for package `letshangllc.completelists` and replace `admob_app_id` TODO in `admob_ids.xml`.
+3. Confirm AdMob app "Complete List" (`ca-app-pub-8223005482588566~3054663130`) stays linked to package `letshangllc.completelists`.
 4. Review **Families** policy if the listing is in Families — ads + UMP settings may need changes.
 5. Add release signing via gitignored `keystore.properties` before uploading an AAB/APK.
