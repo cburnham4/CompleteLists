@@ -1,10 +1,7 @@
 package letshangllc.completelists.Activities;
 
 import android.content.Intent;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +9,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.DialogFragment;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -33,19 +39,22 @@ public class Activity_ListItems extends AppCompatActivity {
     private ArrayList<Item> items;
     private ArrayList<Item> completedItems;
     private ItemsAdapter itemsAdapter;
-
     private AdsHelper adsHelper;
+    private Timer adRefreshTimer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.activity_list_items);
+        applyEdgeToEdgeInsets();
 
-        this.setUpToolbar();
+        setUpToolbar();
 
-        Intent recievedIntent = getIntent();
-        lid = recievedIntent.getIntExtra(ListTableContract.COLUMN_LIST_ID, 0);
-        String name = recievedIntent.getStringExtra(ListTableContract.COLUMN_LIST_NAME);
-        this.setTitle(name);
+        Intent receivedIntent = getIntent();
+        lid = receivedIntent.getIntExtra(ListTableContract.COLUMN_LIST_ID, 0);
+        String name = receivedIntent.getStringExtra(ListTableContract.COLUMN_LIST_NAME);
+        setTitle(name);
 
         items = new ArrayList<>();
         completedItems = new ArrayList<>();
@@ -53,126 +62,147 @@ public class Activity_ListItems extends AppCompatActivity {
 
         itemsCRUD = new ItemsCRUD(this, items, itemsAdapter, lid);
 
-        ListView listView = (ListView) findViewById(R.id.lv_items);
+        ListView listView = findViewById(R.id.lv_items);
         listView.setAdapter(itemsAdapter);
 
         itemsCRUD.readLists();
-
         registerForContextMenu(listView);
 
-
-
-        adsHelper = new AdsHelper(getWindow().getDecorView(), getResources().getString(R.string.admob_items_id), this);
-
+        adsHelper = new AdsHelper(getWindow().getDecorView(),
+                getResources().getString(R.string.admob_items_id), this);
         adsHelper.setUpAds();
-        int delay = 1000; // delay for 1 sec.
+        scheduleAdRefresh();
+    }
+
+    private void applyEdgeToEdgeInsets() {
+        final View root = findViewById(android.R.id.content);
+        ViewCompat.setOnApplyWindowInsetsListener(root, (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+    }
+
+    private void scheduleAdRefresh() {
+        int delay = 1000;
         int period = getResources().getInteger(R.integer.ad_refresh_rate);
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
+        adRefreshTimer = new Timer();
+        adRefreshTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
             public void run() {
-                adsHelper.refreshAd();  // display the data
+                if (adsHelper != null) {
+                    adsHelper.refreshAd();
+                }
             }
         }, delay, period);
     }
 
-
-    private void setUpToolbar(){
-        toolbar = (Toolbar) findViewById(R.id.toolbar); // Attaching the layout to the toolbar object
+    private void setUpToolbar() {
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Activity_ListItems.this, Activity_Lists.class);
-                startActivity(intent);
-                finish();
-            }
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        toolbar.setNavigationOnClickListener(v -> {
+            Intent intent = new Intent(Activity_ListItems.this, Activity_Lists.class);
+            startActivity(intent);
+            finish();
         });
-        //toolbar.setLogo(R.drawable.icon114);
     }
 
-    /**
-     * Set up the context menu
-     */
+    @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         getMenuInflater().inflate(R.menu.menu_lv_lists, menu);
     }
 
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        Item listItem = itemsAdapter.getItem(info.position);
-        switch(item.getItemId()){
-            case R.id.edit:
-                displayDialog(listItem);
-                Toast.makeText(this, "Edit : " + listItem.getItemName(), Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.delete:
-                Toast.makeText(this, "Deleted: " + listItem.getItemName(), Toast.LENGTH_SHORT).show();
-                itemsCRUD.deleteFromDatabase(listItem);
-                break;
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        if (info == null) {
+            return super.onContextItemSelected(item);
         }
-        return true;
+        Item listItem = itemsAdapter.getItem(info.position);
+        int itemId = item.getItemId();
+        if (itemId == R.id.edit) {
+            displayDialog(listItem);
+            Toast.makeText(this, "Edit : " + listItem.getItemName(), Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (itemId == R.id.delete) {
+            Toast.makeText(this, "Deleted: " + listItem.getItemName(), Toast.LENGTH_SHORT).show();
+            itemsCRUD.deleteFromDatabase(listItem);
+            return true;
+        }
+        return super.onContextItemSelected(item);
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_toolbar_items, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        switch (id){
-            case R.id.action_add:
-                Dialog_AddItem dialog_addItem = new Dialog_AddItem();
-                dialog_addItem.setHint("Ex. Bread");
-                dialog_addItem.setCallback(new Dialog_AddItem.AddItemListener() {
-                    @Override
-                    public void onDialogPositiveClick(String newName) {
-                        if(!newName.isEmpty() && !newName.equals("")){
-                            itemsCRUD.insertItemIntoDB(newName);
-                        }
-                    }
-                });
-                dialog_addItem.show(getSupportFragmentManager(), "dialog");
-                break;
-            case R.id.action_complete:
-                for(Item listItem : completedItems){
-                    items.remove(listItem);
-                    itemsAdapter.remove(listItem);
-                    itemsCRUD.deleteFromDatabase(listItem);
+        if (id == R.id.action_add) {
+            Dialog_AddItem dialog_addItem = new Dialog_AddItem();
+            dialog_addItem.setHint("Ex. Bread");
+            dialog_addItem.setCallback(newName -> {
+                if (newName != null && !newName.trim().isEmpty()) {
+                    itemsCRUD.insertItemIntoDB(newName.trim());
                 }
-                completedItems.clear();
-                itemsAdapter.notifyDataSetChanged();
-
-
-                break;
+            });
+            dialog_addItem.show(getSupportFragmentManager(), "dialog");
+            return true;
+        } else if (id == R.id.action_complete) {
+            for (Item listItem : new ArrayList<>(completedItems)) {
+                items.remove(listItem);
+                itemsAdapter.remove(listItem);
+                itemsCRUD.deleteFromDatabase(listItem);
+            }
+            completedItems.clear();
+            itemsAdapter.notifyDataSetChanged();
+            return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-
-    private void displayDialog(Item item){
+    private void displayDialog(Item item) {
         Dialog_EditItem dialog_editItem = new Dialog_EditItem();
         final Item item1 = item;
-        /* Set the name for the dialog to use */
         dialog_editItem.setName(item1.getItemName());
-        /* Set the callback for when the user presses Finish */
-        dialog_editItem.setCallback(new Dialog_EditItem.EditItemListener() {
-            @Override
-            public void onDialogPositiveClick(DialogFragment dialog, String newName) {
-                itemsCRUD.updateName(item1, newName);
-            }
-        });
-        dialog_editItem.show(this.getSupportFragmentManager(), "Edit_Item");
+        dialog_editItem.setCallback((DialogFragment dialog, String newName) ->
+                itemsCRUD.updateName(item1, newName));
+        dialog_editItem.show(getSupportFragmentManager(), "Edit_Item");
+    }
+
+    @Override
+    protected void onPause() {
+        if (adsHelper != null) {
+            adsHelper.onPause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (adsHelper != null) {
+            adsHelper.onResume();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (adRefreshTimer != null) {
+            adRefreshTimer.cancel();
+            adRefreshTimer = null;
+        }
+        if (adsHelper != null) {
+            adsHelper.onDestroy();
+        }
+        super.onDestroy();
     }
 }

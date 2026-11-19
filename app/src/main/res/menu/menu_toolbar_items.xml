@@ -1,20 +1,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" tools:context="letshangllc.completelists.Activities.Activity_ListItems">
-
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="letshangllc.completelists.Activities.Activity_ListItems">
     <item
         android:id="@+id/action_complete"
         android:orderInCategory="100"
-        android:title="Complete"
+        android:title="@string/action_complete"
         android:icon="@drawable/ic_action_check"
-        app:showAsAction="ifRoom"
-        ></item>
-
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_add"
         android:orderInCategory="100"
-        android:title="Add"
+        android:title="@string/action_add"
         android:icon="@drawable/ic_action_plus"
-        app:showAsAction="ifRoom"></item>
-
+        app:showAsAction="ifRoom" />
 </menu>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Complete List</string>
+    <string name="action_settings">Settings</string>
+    <string name="cancel">CANCEL</string>
+    <string name="all_lists_title">All Lists</string>
+    <string name="add_item_title">Add Item:</string>
+    <string name="edit_item_title">Edit Item:</string>
+    <string name="action_add">Add</string>
+    <string name="action_complete">Complete</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
+
+    <!-- Used as View tag keys in ItemsAdapter (not user-visible) -->
+    <string name="TAG_ITEM">TAG_ITEM</string>
+    <string name="TAG_TEXTVIEW">TAG_TEXTVIEW</string>
+</resources>
