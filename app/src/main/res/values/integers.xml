@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Manual banner refresh interval. AdMob policy recommends >= 60s between refreshes. -->
+    <integer name="ad_refresh_rate">60000</integer>
+</resources>

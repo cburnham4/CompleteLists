@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    PRODUCTION AdMob IDs for Complete List (letshangllc.completelists)
+
+    Publisher: ca-app-pub-8223005482588566
+    Source: AdMob console export (admob-ids.csv)
+
+    Debug builds override these with Google's official test IDs via
+    app/src/debug/res/values/admob_ids.xml
+-->
+<resources>
+    <!-- AdMob Application ID — "Complete List" / letshangllc.completelists -->
+    <string name="admob_app_id">ca-app-pub-8223005482588566~3054663130</string>
+
+    <!-- Activity_Lists — AdMob unit "Banner of List Activity" -->
+    <string name="admob_lists_id">ca-app-pub-8223005482588566/4531396335</string>
+
+    <!-- Activity_ListItems — AdMob unit "Banner of Items" -->
+    <string name="admob_items_id">ca-app-pub-8223005482588566/6008129537</string>
+</resources>

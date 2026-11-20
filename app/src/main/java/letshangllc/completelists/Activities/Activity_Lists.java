@@ -1,10 +1,7 @@
 package letshangllc.completelists.Activities;
 
 import android.content.Intent;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +9,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.DialogFragment;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -32,128 +38,154 @@ public class Activity_Lists extends AppCompatActivity {
     private ListsAdapter listsAdapter;
     private ListsCRUD listsCRUD;
     private AdsHelper adsHelper;
+    private Timer adRefreshTimer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.activity_lists);
+        applyEdgeToEdgeInsets();
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar); // Attaching the layout to the toolbar object
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ListView listView = (ListView) findViewById(R.id.lv_lists);
+        ListView listView = findViewById(R.id.lv_lists);
 
         lists = new ArrayList<>();
-
         listsAdapter = new ListsAdapter(this, lists);
 
-        listsCRUD = new ListsCRUD(this, lists,listsAdapter);
+        listsCRUD = new ListsCRUD(this, lists, listsAdapter);
         listsCRUD.readLists();
         listView.setAdapter(listsAdapter);
 
         listView.setOnItemClickListener(new ListViewOnClick());
-
         registerForContextMenu(listView);
 
-        this.setTitle("All Lists");
-        adsHelper = new AdsHelper(getWindow().getDecorView(), getResources().getString(R.string.admob_lists_id), this);
-
+        setTitle(R.string.all_lists_title);
+        adsHelper = new AdsHelper(getWindow().getDecorView(),
+                getResources().getString(R.string.admob_lists_id), this);
         adsHelper.setUpAds();
-        int delay = 1000; // delay for 1 sec.
+        scheduleAdRefresh();
+    }
+
+    private void applyEdgeToEdgeInsets() {
+        final View root = findViewById(android.R.id.content);
+        ViewCompat.setOnApplyWindowInsetsListener(root, (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+    }
+
+    private void scheduleAdRefresh() {
+        int delay = 1000;
         int period = getResources().getInteger(R.integer.ad_refresh_rate);
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
+        adRefreshTimer = new Timer();
+        adRefreshTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
             public void run() {
-                adsHelper.refreshAd();  // display the data
+                if (adsHelper != null) {
+                    adsHelper.refreshAd();
+                }
             }
         }, delay, period);
     }
 
-    /**
-     * Set up the context menu
-     */
+    @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         getMenuInflater().inflate(R.menu.menu_lv_lists, menu);
     }
 
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        List list = listsAdapter.getItem(info.position);
-        switch(item.getItemId()){
-            case R.id.edit:
-                displayDialog(list);
-                Toast.makeText(this, "Edit : " + list.getName(), Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.delete:
-                Toast.makeText(this, "Deleted: " + list.getName(), Toast.LENGTH_SHORT).show();
-                listsCRUD.deleteFromDatabase(list);
-                break;
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        if (info == null) {
+            return super.onContextItemSelected(item);
         }
-        return true;
+        List list = listsAdapter.getItem(info.position);
+        int itemId = item.getItemId();
+        if (itemId == R.id.edit) {
+            displayDialog(list);
+            Toast.makeText(this, "Edit : " + list.getName(), Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (itemId == R.id.delete) {
+            Toast.makeText(this, "Deleted: " + list.getName(), Toast.LENGTH_SHORT).show();
+            listsCRUD.deleteFromDatabase(list);
+            return true;
+        }
+        return super.onContextItemSelected(item);
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_toolbar_lists, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        switch (id){
-            case R.id.action_add:
-                Dialog_AddItem dialog_addItem = new Dialog_AddItem();
-                dialog_addItem.setHint("Ex. Groceries");
-                dialog_addItem.setCallback(new Dialog_AddItem.AddItemListener() {
-                    @Override
-                    public void onDialogPositiveClick(String newName) {
-                        if(!newName.isEmpty() && !newName.equals("")){
-                            listsCRUD.insertIntoDB(newName);
-                        }
-                    }
-                });
-                dialog_addItem.show(getSupportFragmentManager(), "dialog");
-                break;
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_add) {
+            Dialog_AddItem dialog_addItem = new Dialog_AddItem();
+            dialog_addItem.setHint("Ex. Groceries");
+            dialog_addItem.setCallback(newName -> {
+                if (newName != null && !newName.trim().isEmpty()) {
+                    listsCRUD.insertIntoDB(newName.trim());
+                }
+            });
+            dialog_addItem.show(getSupportFragmentManager(), "dialog");
+            return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-    public class ListViewOnClick implements AdapterView.OnItemClickListener{
+    public class ListViewOnClick implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(Activity_Lists.this, Activity_ListItems.class);
             List list = listsAdapter.getItem(position);
-            int lid = list.getLid();
-            String name = list.getName();
-            intent.putExtra(ListTableContract.COLUMN_LIST_ID, lid);
-            intent.putExtra(ListTableContract.COLUMN_LIST_NAME, name);
+            intent.putExtra(ListTableContract.COLUMN_LIST_ID, list.getLid());
+            intent.putExtra(ListTableContract.COLUMN_LIST_NAME, list.getName());
             startActivity(intent);
         }
     }
 
-    private void displayDialog(List list){
+    private void displayDialog(List list) {
         Dialog_EditItem dialog_editItem = new Dialog_EditItem();
         final List list1 = list;
-        /* Set the name for the dialog to use */
         dialog_editItem.setName(list1.getName());
-        /* Set the callback for when the user presses Finish */
-        dialog_editItem.setCallback(new Dialog_EditItem.EditItemListener() {
-            @Override
-            public void onDialogPositiveClick(DialogFragment dialog, String newName) {
-                listsCRUD.updateDB(list1, newName);
-            }
-        });
-        dialog_editItem.show(this.getSupportFragmentManager(), "Edit_Day");
+        dialog_editItem.setCallback((DialogFragment dialog, String newName) ->
+                listsCRUD.updateDB(list1, newName));
+        dialog_editItem.show(getSupportFragmentManager(), "Edit_Day");
     }
 
+    @Override
+    protected void onPause() {
+        if (adsHelper != null) {
+            adsHelper.onPause();
+        }
+        super.onPause();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (adsHelper != null) {
+            adsHelper.onResume();
+        }
+    }
 
+    @Override
+    protected void onDestroy() {
+        if (adRefreshTimer != null) {
+            adRefreshTimer.cancel();
+            adRefreshTimer = null;
+        }
+        if (adsHelper != null) {
+            adsHelper.onDestroy();
+        }
+        super.onDestroy();
+    }
 }
